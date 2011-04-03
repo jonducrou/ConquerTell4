@@ -1,0 +1,18 @@
+{
+  "description": {
+    "message": "Game monitor for ConquerClub.com<br/>Please send comments and requests to conquertell@gmail.com",
+    "description": "description of the extension"
+  },
+  "preferences": {
+    "message": "Preferences",
+    "description": "text for the link to the options page"
+  },
+  "save": {
+    "message": "Save",
+    "description": "for the save button on options page"
+  },
+  "username": {
+    "message": "Username",
+    "description": "for the username heading on options page"
+  }
+}

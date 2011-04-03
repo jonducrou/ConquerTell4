@@ -1,0 +1,201 @@
+<script>
+var conquertell4 = {
+  init: function () {
+    this.update();
+    setInterval("conquertell4.update()",30000);    
+  },
+
+  create_popup : function (t) { 
+    this.tgt = t;
+    chrome.browserAction.setTitle({title: "loading..." });
+    this.update_chrome();
+  },
+
+  req: null,
+  tgt: null,
+
+  update: function() {
+    var username = localStorage["username"];
+    if (username && username != "") {
+      var url = "http://www.conquerclub.com/rss.php?username=" + username;
+      tgt = this.tgt;
+      req = new XMLHttpRequest();
+  	  req.onreadystatechange = this.process_data;
+  	  req.open('GET', url, true); 
+  	  req.send(null);
+    } else {
+      var div = document.createElement("div");
+      var span = document.createElement("span");
+      div.appendChild(span);
+      span.innerHTML = "Ahh! I don't know who you are. Enter a username via the Options page. <p><a target='_new' href='options.html'>Options</a>";
+      this.tgt.appendChild(div);
+    }
+  },
+
+  process_data: function() {
+    //collects new data from server
+    dataset = [];
+    var action_count = 0;
+    var count = 0;
+    var best_game_state = 'UNKNOWN';
+    var best_game_wait = '99-99-99';
+    if (req.readyState == 4 && req.status == 200) {
+      dom = req.responseXML;
+      var items = dom.getElementsByTagName("item");
+		  for (var i = 0; i < items.length; i++){
+        var gameobj = {};
+        gameobj.title_text = items.item(i).getElementsByTagName("title").item(0).firstChild.nodeValue;
+        gameobj.link = items.item(i).getElementsByTagName("link").item(0).firstChild.nodeValue;
+        dataset.push(gameobj);
+
+        gameobj.game_number = gameobj.title_text.split(" ")[1];
+        gameobj.game_state = gameobj.title_text.split(" ")[5];
+        gameobj.game_wait = gameobj.title_text.split(" ")[6].substring(1);
+
+        if (gameobj.game_wait < best_game_wait) {
+          best_game_wait = gameobj.game_wait;
+        }
+
+        if (gameobj.game_state == 'PLAYING' || gameobj.game_state == 'READY') {
+          action_count += 1;
+        }
+        count += 1;
+
+        if (best_game_state == 'UNKNOWN') {
+          best_game_state = gameobj.game_state;
+        } else if (gameobj.game_state == 'PLAYING') {
+          best_game_state = gameobj.game_state;
+        } else if (gameobj.game_state == 'READY' && best_game_state != 'PLAYING') {
+          best_game_state = gameobj.game_state;
+        } else if (gameobj.game_state == 'WAITING' && best_game_state != 'PLAYING' && best_game_state != 'READY') {
+          best_game_state = gameobj.game_state;
+        }
+
+      }
+      if (best_game_state == 'missing') {
+        best_game_state = 'UNKNOWN';
+      }
+      conquertell4.set_state({data_set: dataset, best_game_state: best_game_state, best_game_wait: best_game_wait, count: action_count + "/" + count});
+    }
+  },
+
+  game_state: null,
+  clear_state: function() {
+    this.game_state = null;
+    chrome.browserAction.setIcon({path: this.image_map['UNKNOWN']});    
+    chrome.browserAction.setBadgeText({text: "" });
+  },
+  set_state: function(game_state) {
+    this.game_state = game_state;
+    chrome.browserAction.setTitle({title: this.game_state.best_game_state + "(" + this.game_state.best_game_wait + ")" });
+    chrome.browserAction.setIcon({path: this.image_map[this.game_state.best_game_state]});    
+
+    if(this.game_state.best_game_state == 'PLAYING' || this.game_state.best_game_state == 'READY') {
+      this.enable_flash();
+      chrome.browserAction.setBadgeBackgroundColor({color: [243,132,0,255]});
+    } else {
+      this.disable_flash();
+    }
+
+    if (this.game_state.best_game_state != 'UNKNOWN') {
+      chrome.browserAction.setBadgeText({text: this.game_state.count + "" });
+    } else {
+      chrome.browserAction.setBadgeText({text: "" });
+    }
+  },
+
+  enable_flash: function() {
+    if (this.flash_on == false) {
+      this.flash_on = true;
+      this.flash();
+    }
+  },
+
+  disable_flash: function() {
+    this.flash_on = false;
+  },
+
+  flash_on: false,
+  flash_state: true,
+  flash: function(){
+    if (this.flash_state) {
+      chrome.browserAction.setBadgeBackgroundColor({color:[243,132,0,255]});
+    } else {
+      chrome.browserAction.setBadgeBackgroundColor({color:[243,132,0,0]});
+      if (! this.flash_on) { return; }
+    }
+    this.flash_state = ! this.flash_state;
+    this.flash_timeout = setTimeout("conquertell4.flash()",500);
+
+
+  },
+
+  image_map: {
+    READY        :  "images/READY-19.png",
+    PLAYING      :  "images/PLAYING-19.png",
+    ELIMINATED   :  "images/UNKNOWN-19.png",
+    WAITING      :  "images/WAITING-19.png",
+    UNKNOWN      :  "images/UNKNOWN-19.png",
+    S_READY      :  "images/icon_status_green.gif",
+    S_PLAYING    :  "images/icon_status_yellow.gif",
+    S_ELIMINATED :  "images/icon_status_black.gif",
+    S_WAITING    :  "images/icon_status_red.gif",
+    S_UNKNOWN    :  "images/icon_status_black.gif",
+    S_missing    :  "images/icon_status_black.gif",
+  }, 
+
+  update_chrome: function () {
+    if(this.game_state == null) {
+      var div = document.createElement("div");
+      var span = document.createElement("span");
+      div.appendChild(span);
+      span.innerHTML = "Loading... Try again later!";
+      this.tgt.appendChild(div);
+      this.append_prefs_link(this.tgt);
+      return;
+    }
+      var img = document.createElement("img");
+
+    for (var i = 0; i < this.game_state.data_set.length; i++) {
+      var game_obj = this.game_state.data_set[i];
+      var div = document.createElement("div");
+      var span = document.createElement("span");
+      var img = document.createElement("img");
+      var a = document.createElement("a");
+
+      img.src = this.image_map["S_" + game_obj.game_state];
+      img.width = 10;
+      img.height = 10;
+
+      a.href="#";
+      a.onclick = (function(link){ return function(){chrome.tabs.create({url: link});}})(game_obj.link);
+      a.innerHTML = game_obj.title_text;
+
+      span.appendChild(img);
+      span.appendChild(a);
+      div.appendChild(span);
+      this.tgt.appendChild(div);
+    }
+    this.append_prefs_link(this.tgt);
+  },
+  append_prefs_link : function(tgt) {
+    var hr = document.createElement("hr");
+    tgt.appendChild(hr);
+    var div = document.createElement("div");
+    div.style.textAlign = "right";
+    var span = document.createElement("span");
+    var a = document.createElement("a");
+    a.href="options.html";
+    a.innerHTML = chrome.i18n.getMessage("preferences");
+
+    span.appendChild(a);
+    div.appendChild(span);
+    tgt.appendChild(div);
+  }
+};
+
+
+
+
+</script>
+<body onLoad="javascript:conquertell4.init()"/>

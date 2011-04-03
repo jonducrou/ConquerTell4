@@ -1,0 +1,103 @@
+
+
+<html>
+<head><title>My Test Extension Options</title>
+<style>
+body {
+  font-family: arial,helvetica,sans-serif;
+  font-size: 80%;
+}
+
+.ccform fieldset {
+padding: 5px;
+border: 1px dotted #565;
+background-color: #eee;
+}
+.ccform legend {
+padding: 2px 10px;
+border: 1px dotted #565;
+background-color: #eee;
+color: #787;
+font-size: 140%;
+}
+/* star-html hack to keep the fieldset bgcolor in the border on IE */
+* html .ccform fieldset {position:relative;margin-top:2em;}
+* html .ccform legend {position:relative;top:-1em;}
+/* end of hack */
+.ccform .field-row {
+clear: both;
+margin-top: 2px;
+}
+.ccform .field-label {
+width: 10em;
+float: left;
+margin-right: .5em;
+text-align: right;
+}
+.ccform .indent {
+margin-left: 10.6em;
+}
+.ccform input.field, .ccform textarea.field, .ccform select.field {
+border: 1px solid #565;
+}
+.ccform input.field {
+width: 15em;
+}
+.ccform input.field.f2 {
+width: 30em;
+}
+.ccform input.field.f3 {
+width: 5em;
+}
+.ccform input.button, .ccform .warning {
+margin-left: 10em;
+</style>
+</head>
+<script type="text/javascript">
+
+// Saves options to localStorage.
+function save_options() {
+
+  var input = document.getElementById("username");
+  var username = input.value;
+  localStorage["username"] = username;
+
+  chrome.extension.getBackgroundPage().conquertell4.clear_state();
+  chrome.extension.getBackgroundPage().conquertell4.update();
+
+  // Update status to let user know options were saved.
+  var status = document.getElementById("status");
+  status.innerHTML = "Options Saved.";
+  setTimeout(function() {
+    status.innerHTML = "";
+  }, 1250);
+
+
+}
+
+// Restores select box state to saved value from localStorage.
+function restore_options() {
+  document.getElementById("save").innerHTML = chrome.i18n.getMessage("save");
+  document.getElementById("username_header").innerHTML = chrome.i18n.getMessage("username");
+  
+  var username = localStorage["username"];
+  if (username) {
+    var input = document.getElementById("username");
+    input.value = username;
+  }
+}
+
+</script>
+
+<body onload="restore_options()">
+<form class="ccform" onSubmit="return false;"> 
+<fieldset> 
+<legend id='username_header'>???</legend> 
+<input type="text" id="username" />
+<button id='save' onclick="save_options();">???</button><div id="status"></div>
+</fieldset> 
+</form> 
+
+</body>
+</html>
+

@@ -1,0 +1,20 @@
+{
+  "name": "ConquerTell4",
+  "version": "1.0.1",
+  "description": "__MSG_description__",
+  "background_page": "background.html",
+  "browser_action": {
+    "default_icon": "images/UNKNOWN-19.png",
+    "popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "http://www.conquerclub.com/",
+    "tabs"
+  ],
+  "default_locale": "en",
+  "icons": { "16": "images/WAITING-16.png",
+             "48": "images/WAITING-48.png",
+            "128": "images/WAITING-128.png" 
+  }
+}
