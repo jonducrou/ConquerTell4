@@ -1,4 +1,7 @@
 <!ENTITY prefwindow.title "ConquerTell4 Preferences">
 <!ENTITY pane1.title "ConquerTell4 Preferences">
+<!ENTITY waitawhile.label "It may take 30 seconds for changes to take effect">
 <!ENTITY stringpref.label "Username:">
 <!ENTITY stringpref.accesskey "U">
+<!ENTITY onlyreadypref.label "Show only ready games:">
+<!ENTITY onlyreadypref.accesskey "S">

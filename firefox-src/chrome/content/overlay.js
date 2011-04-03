@@ -1,6 +1,6 @@
 var conquertell4_game_state = {
   
-  //this sucks
+  //this sucks - currently forces a 30 second wait for an update, need to add a mutex manually?
   observe: function(aSubject, aTopic, aData){
     if(aTopic != "nsPref:changed") return;
     //this.update();
@@ -62,7 +62,7 @@ var conquertell4_game_state = {
           best_game_state = gameobj.game_state;
         }
       }
-    } 
+
 
     this.container = document.getElementById("conquertell4-toolbar-button");
     this.container.setAttribute("class", "conquertell4-" + best_game_state);
@@ -70,16 +70,29 @@ var conquertell4_game_state = {
 
     var mp = document.createElement("menupopup");
 
+    var only_ready = conquertell4.prefs.getBoolPref("only_ready");
+
+    var added = 0;
     for (var j = 0; j < dataset.length; j++) { 
-      var i = dataset[j];
+      var game_obj = dataset[j];
+      if (only_ready && game_obj.game_state != 'READY' && game_obj.game_state != 'PLAYING' ) {
+        continue;
+      }
+      added += 1;
       var x = document.createElement("menuitem");
-      x.setAttribute("label", i.title_text);
-      x.setAttribute("class", "menuitem-iconic conquertell4-" + i.game_state);
-      x.link = i.link;
+      x.link = game_obj.link;
+      x.setAttribute("label", game_obj.title_text);
+      x.setAttribute("class", "menuitem-iconic conquertell4-" + game_obj.game_state);
       x.addEventListener("click", function(y){openUILinkIn(y.target.link, "tab")}, false);
       mp.appendChild(x);      
     }
-
+    if (only_ready && added == 0) {
+      // show something rather than nothing
+      var x = document.createElement("menuitem");
+      x.setAttribute("label", conquertell4.strings.getString("NoReadyGames"));
+      x.setAttribute("class", "menuitem-iconic conquertell4-WAITING" );
+      mp.appendChild(x);
+    }
     if (dataset.length == 0) {
       var x = document.createElement("menuitem");
       x.setAttribute("label", conquertell4.strings.getString("FailureLoading"));
@@ -95,6 +108,7 @@ var conquertell4_game_state = {
 
     while (this.container.firstChild) { this.container.removeChild(this.container.firstChild); }
     this.container.appendChild(mp);    
+    } 
   }
 
 };
