@@ -149,15 +149,19 @@ var conquertell4 = {
       var div = document.createElement("div");
       var span = document.createElement("span");
       div.appendChild(span);
-      span.innerHTML = "Loading... Try again later!";
+      span.innerHTML = chrome.i18n.getMessage("please_wait");
       this.tgt.appendChild(div);
       this.append_prefs_link(this.tgt);
       return;
     }
       var img = document.createElement("img");
-
+    var added = 0;
     for (var i = 0; i < this.game_state.data_set.length; i++) {
       var game_obj = this.game_state.data_set[i];
+      if (localStorage["only_ready"] && game_obj.game_state != 'READY' && game_obj.game_state != 'PLAYING' ) {
+        continue;
+      }
+      added += 1;
       var div = document.createElement("div");
       var span = document.createElement("span");
       var img = document.createElement("img");
@@ -176,8 +180,18 @@ var conquertell4 = {
       div.appendChild(span);
       this.tgt.appendChild(div);
     }
+    if (localStorage["only_ready"] && added == 0) {
+      // show something rather than nothing
+      var div = document.createElement("div");
+      var span = document.createElement("span");
+      span.innerHTML = chrome.i18n.getMessage("no_ready_games");
+      div.appendChild(span);
+      this.tgt.appendChild(div);
+    }
+
     this.append_prefs_link(this.tgt);
   },
+
   append_prefs_link : function(tgt) {
     var hr = document.createElement("hr");
     tgt.appendChild(hr);

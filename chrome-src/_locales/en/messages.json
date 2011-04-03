@@ -14,5 +14,17 @@
   "username": {
     "message": "Username",
     "description": "for the username heading on options page"
+  },
+  "show_only_ready": {
+    "message": "Show only ready games",
+    "description": "for a heading on options page"
+  },
+  "please_wait": {
+    "message": "Loading... Try again later!",
+    "description": ""
+  },
+  "no_ready_games": {
+    "message": "There are no ready games",
+    "description": ""
   }
 }

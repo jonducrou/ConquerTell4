@@ -62,6 +62,10 @@ function save_options() {
   var username = input.value;
   localStorage["username"] = username;
 
+  var input2 = document.getElementById("only_ready");
+  var only_ready = input2.value;
+  localStorage["only_ready"] = only_ready;
+
   chrome.extension.getBackgroundPage().conquertell4.clear_state();
   chrome.extension.getBackgroundPage().conquertell4.update();
 
@@ -78,12 +82,19 @@ function save_options() {
 // Restores select box state to saved value from localStorage.
 function restore_options() {
   document.getElementById("save").innerHTML = chrome.i18n.getMessage("save");
+  document.getElementById("pref_header").innerHTML = chrome.i18n.getMessage("preferences");
   document.getElementById("username_header").innerHTML = chrome.i18n.getMessage("username");
+  document.getElementById("only_ready_header").innerHTML = chrome.i18n.getMessage("show_only_ready");
   
   var username = localStorage["username"];
   if (username) {
     var input = document.getElementById("username");
     input.value = username;
+  }  
+  var only_ready = localStorage["only_ready"];
+  if (only_ready) {
+    var input = document.getElementById("only_ready");
+    input.checked = only_ready == 'on';
   }
 }
 
@@ -92,8 +103,14 @@ function restore_options() {
 <body onload="restore_options()">
 <form class="ccform" onSubmit="return false;"> 
 <fieldset> 
-<legend id='username_header'>???</legend> 
-<input type="text" id="username" />
+<legend id='pref_header'>???</legend> 
+<p>
+<span id='username_header'>???</span>:<input type="text" id="username" />
+</p>
+<p>
+<span id='only_ready_header'>???</span>:<input type="checkbox" id="only_ready" />
+</p>
+
 <button id='save' onclick="save_options();">???</button><div id="status"></div>
 </fieldset> 
 </form> 
