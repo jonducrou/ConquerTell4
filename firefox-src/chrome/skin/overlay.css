@@ -1,0 +1,54 @@
+.conquertell4-READY {
+  list-style-image: url("chrome://conquertell4/skin/READY-24.png") ;
+}
+.conquertell4-READY:hover {
+}
+[iconsize="small"] .conquertell4-READY {
+  list-style-image: url("chrome://conquertell4/skin/READY-16.png") ;
+}
+[iconsize="small"] .conquertell4-READY:hover {
+}
+
+.conquertell4-PLAYING {
+  list-style-image: url("chrome://conquertell4/skin/PLAYING-24.png") ;
+}
+.conquertell4-PLAYING:hover {
+}
+[iconsize="small"] .conquertell4-PLAYING {
+  list-style-image: url("chrome://conquertell4/skin/PLAYING-16.png") ;
+}
+[iconsize="small"] .conquertell4-PLAYING:hover {
+}
+
+.conquertell4-WAITING {
+  list-style-image: url("chrome://conquertell4/skin/WAITING-24.png") ;
+}
+.conquertell4-WAITING:hover {
+}
+[iconsize="small"] .conquertell4-WAITING {
+  list-style-image: url("chrome://conquertell4/skin/WAITING-16.png") ;
+}
+[iconsize="small"] .conquertell4-WAITING:hover {
+}
+
+.conquertell4-UNKNOWN {
+  list-style-image: url("chrome://conquertell4/skin/UNKNOWN-24.png") ;
+}
+.conquertell4-UNKNOWN:hover {
+}
+[iconsize="small"] .conquertell4-UNKNOWN {
+  list-style-image: url("chrome://conquertell4/skin/UNKNOWN-16.png") ;
+}
+[iconsize="small"] .conquertell4-UNKNOWN:hover {
+}
+
+.conquertell4-ELIMINATED {
+  list-style-image: url("chrome://conquertell4/skin/UNKNOWN-24.png") ;
+}
+.conquertell4-ELIMINATED:hover {
+}
+[iconsize="small"] .conquertell4-ELIMINATED {
+  list-style-image: url("chrome://conquertell4/skin/UNKNOWN-16.png") ;
+}
+[iconsize="small"] .conquertell4-ELIMINATED:hover {
+}

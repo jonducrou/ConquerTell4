@@ -1,0 +1,7 @@
+content   conquertell4                 chrome/content/
+skin      conquertell4   classic/1.0   chrome/skin/
+locale    conquertell4   en-US         chrome/locale/en-US/
+
+
+overlay   chrome://browser/content/browser.xul   chrome://conquertell4/content/ff-overlay.xul
+style chrome://global/content/customizeToolbar.xul chrome://conquertell4/skin/overlay.css

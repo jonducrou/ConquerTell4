@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://conquertell4/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://conquertell4/locale/overlay.dtd">
+<overlay id="conquertell4-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="overlay.js"/>
+  <script src="ff-overlay.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="conquertell4-strings" src="chrome://conquertell4/locale/overlay.properties"/>
+  </stringbundleset>
+
+  <toolbarpalette id="BrowserToolbarPalette">
+    <toolbarbutton id="conquertell4-toolbar-button" class="conquertell4-UNKNOWN chromeclass-toolbar-additional"
+      label="&conquertell4ToolbarButton.label;" tooltiptext="&conquertell4ToolbarButton.tooltip;"
+      oncommand="conquertell4.onToolbarButtonCommand()"  type="menu">
+      <menupopup>
+        <menuitem class="menuitem-iconic" label="&conquertell4.loading;" image="chrome://conquertell4/skin/UNKNOWN-16.png"/>
+      </menupopup>
+    </toolbarbutton>
+  </toolbarpalette>
+</overlay>
