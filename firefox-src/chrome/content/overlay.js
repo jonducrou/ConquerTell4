@@ -27,7 +27,7 @@ var conquertell4_game_state = {
     var active_count = 0;
 
     if (req.readyState == 4 && req.status == 200) {
-      dom = req.responseXML;
+      var dom = req.responseXML;
       var items = dom.getElementsByTagName("item");
 		  for (var i = 0; i < items.length; i++){
         var gameobj = {};
@@ -63,6 +63,10 @@ var conquertell4_game_state = {
         }
       }
 
+    var conquertellSOUND = conquertell4.prefs.getCharPref("sound");
+    if (conquertellSOUND != null && conquertellSOUND != 'none' ) {
+      conquertell4.playAudioFile("chrome://conquertell/skin/" + conquertellSOUND + '.wav');
+    }
 
     this.container = document.getElementById("conquertell4-toolbar-button");
     this.container.setAttribute("class", "conquertell4-" + best_game_state);
@@ -146,7 +150,20 @@ var conquertell4 = {
   },
   onToolbarButtonCommand: function(e) {
     conquertell4.onMenuItemCommand(e);
-  }
+  },
+  playAudioFile: function(audioFile) {
+    var url = null;
+    var sound = null;
+
+    url = Components.classes["@mozilla.org/network/standard-url;1"].createInstance();
+    url = url.QueryInterface(Components.interfaces.nsIURL);
+    url.spec = audioFile;
+
+    sound = Components.classes["@mozilla.org/sound;1"].createInstance();
+    sound = sound.QueryInterface(Components.interfaces.nsISound);
+    sound.init();
+    sound.play(url);
+}
 };
 
 window.addEventListener("load", function () { conquertell4.onLoad(); }, false);

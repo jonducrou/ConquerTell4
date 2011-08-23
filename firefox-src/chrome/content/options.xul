@@ -6,9 +6,19 @@
     <preferences>
       <preference id="username" name="extensions.conquertell4.username" type="string"/> <!-- note that this is only an ASCII string - use unichar for unicode strings -->
       <preference id="only_ready" name="extensions.conquertell4.only_ready" type="bool"/> 
+      <preference id="sound" name="extensions.conquertell4.sound" type="string"/> 
     </preferences>
     <label accesskey="&stringpref.accesskey;" control="textstringpref">&stringpref.label;</label><textbox id="textstringpref" preference="username"/>
     <checkbox id="onlyreadypref" preference="only_ready" label="&onlyreadypref.label;"/>
+    <label accesskey="&soundpref.accesskey;">&soundpref.label;</label>
+    <radiogroup id="soundpref" preference="sound">
+      <radio preference="sound" label="none" value="none" />
+      <radio preference="sound" label="Dogs Bark" value="bark" />
+      <radio preference="sound" label="Bugler" value="bugle" />
+      <radio preference="sound" label="Glunk" value="glunk" />
+      <radio preference="sound" label="Infantry" value="infantry" />
+      <radio preference="sound" label="Machine Gun" value="machine-gun" />
+    </radiogroup>
     <label>&waitawhile.label;</label>
   </prefpane>
 </prefwindow>

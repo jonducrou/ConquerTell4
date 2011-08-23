@@ -5,3 +5,5 @@
 <!ENTITY stringpref.accesskey "U">
 <!ENTITY onlyreadypref.label "Show only ready games:">
 <!ENTITY onlyreadypref.accesskey "S">
+<!ENTITY soundpref.label "Ready Sound:">
+<!ENTITY soundpref.accesskey "R">

@@ -19,6 +19,10 @@
     "message": "Show only ready games",
     "description": "for a heading on options page"
   },
+  "flash": {
+    "message": "Flash the status when ready",
+    "description": "for a heading on options page"
+  },
   "please_wait": {
     "message": "Loading... Try again later!",
     "description": ""

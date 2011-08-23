@@ -66,6 +66,10 @@ function save_options() {
   var only_ready = input2.value;
   localStorage["only_ready"] = only_ready;
 
+  var input2 = document.getElementById("flash");
+  var only_ready = input2.value;
+  localStorage["flash"] = only_ready;
+
   chrome.extension.getBackgroundPage().conquertell4.clear_state();
   chrome.extension.getBackgroundPage().conquertell4.update();
 
@@ -85,6 +89,7 @@ function restore_options() {
   document.getElementById("pref_header").innerHTML = chrome.i18n.getMessage("preferences");
   document.getElementById("username_header").innerHTML = chrome.i18n.getMessage("username");
   document.getElementById("only_ready_header").innerHTML = chrome.i18n.getMessage("show_only_ready");
+  document.getElementById("flash_header").innerHTML = chrome.i18n.getMessage("flash");
   
   var username = localStorage["username"];
   if (username) {
@@ -95,6 +100,11 @@ function restore_options() {
   if (only_ready) {
     var input = document.getElementById("only_ready");
     input.checked = only_ready == 'on';
+  } 
+  var flash_on = localStorage["flash"];
+  if (flash_on) {
+    var input = document.getElementById("flash");
+    input.checked = flash_on == 'on';
   }
 }
 
@@ -109,6 +119,9 @@ function restore_options() {
 </p>
 <p>
 <span id='only_ready_header'>???</span>:<input type="checkbox" id="only_ready" />
+</p>
+<p>
+<span id='flash_header'>???</span>:<input type="checkbox" id="flash" />
 </p>
 
 <button id='save' onclick="save_options();">???</button><div id="status"></div>

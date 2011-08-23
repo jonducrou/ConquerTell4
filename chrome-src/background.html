@@ -3,6 +3,9 @@ var conquertell4 = {
   init: function () {
     this.update();
     setInterval("conquertell4.update()",30000);    
+    if(localStorage["flash"] = null) {
+        localStorage["flash"] = 'on';
+    }
   },
 
   create_popup : function (t) { 
@@ -91,7 +94,9 @@ var conquertell4 = {
     chrome.browserAction.setIcon({path: this.image_map[this.game_state.best_game_state]});    
 
     if(this.game_state.best_game_state == 'PLAYING' || this.game_state.best_game_state == 'READY') {
-      this.enable_flash();
+      if (localStorage["flash"]) {
+          this.enable_flash(); 
+      }
       chrome.browserAction.setBadgeBackgroundColor({color: [243,132,0,255]});
     } else {
       this.disable_flash();
