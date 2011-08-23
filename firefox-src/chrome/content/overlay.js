@@ -1,5 +1,6 @@
 var conquertell4_game_state = {
   
+  last_state: null,
   //this sucks - currently forces a 30 second wait for an update, need to add a mutex manually?
   observe: function(aSubject, aTopic, aData){
     if(aTopic != "nsPref:changed") return;
@@ -63,10 +64,13 @@ var conquertell4_game_state = {
         }
       }
 
-    var conquertellSOUND = conquertell4.prefs.getCharPref("sound");
-    if (conquertellSOUND != null && conquertellSOUND != 'none' ) {
-      conquertell4.playAudioFile("chrome://conquertell/skin/" + conquertellSOUND + '.wav');
+    if (conquertell4_game_state.last_state != "READY" && gameobj.game_state == "READY") {
+      var conquertellSOUND = conquertell4.prefs.getCharPref("sound");
+      if (conquertellSOUND != null && conquertellSOUND != 'none' ) {
+        conquertell4.playAudioFile("chrome://conquertell/skin/" + conquertellSOUND + '.wav');
+      }
     }
+    conquertell4_game_state.last_state =  gameobj.game_state;
 
     this.container = document.getElementById("conquertell4-toolbar-button");
     this.container.setAttribute("class", "conquertell4-" + best_game_state);
